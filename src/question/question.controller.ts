@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/user/user.service';
-import { QuestionsService } from './question.service';
+import { Body, Controller, Get, Headers, Param, Post } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { UserService } from "src/user/user.service";
+import { QuestionsService } from "./question.service";
 
 export interface IFilter {
   areas: string[];
@@ -9,12 +9,12 @@ export interface IFilter {
   userQuestions: string[];
 }
 
-@Controller('questions')
+@Controller("questions")
 export class QuestionsController {
   constructor(
     private readonly questionsService: QuestionsService,
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   @Get()
@@ -22,8 +22,8 @@ export class QuestionsController {
     return this.questionsService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
+  @Get(":id")
+  async findOne(@Param("id") id: string) {
     return this.questionsService.findOne(id);
   }
 
@@ -33,13 +33,7 @@ export class QuestionsController {
 
     const question = await this.questionsService.findByFilter(filterObjects);
 
-    if (!authToken) return question;
-    console.log(this.jwtService.decode(authToken.split('')[1]));
-    const id = this.jwtService.decode(authToken.split(' ')[1]).sub;
-    await this.userService.addQuestion({
-      id,
-      newQuestion: question.id,
-    });
+    if (!authToken || authToken.length < 10) return question;
 
     return question;
   }

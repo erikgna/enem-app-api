@@ -1,6 +1,6 @@
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/user/user.service';
-import { QuestionsService } from './question.service';
+import { JwtService } from "@nestjs/jwt";
+import { UserService } from "src/user/user.service";
+import { QuestionsService } from "./question.service";
 export interface IFilter {
     areas: string[];
     years: string[];

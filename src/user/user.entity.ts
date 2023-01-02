@@ -1,8 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { UpdateUserDto } from "./update-user.dto";
 
 @Entity()
 export class Users {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -14,6 +15,6 @@ export class Users {
   @Column()
   password: string;
 
-  @Column({ type: 'json', default: [] })
-  questions: string[];
+  @Column({ type: "json", default: [] })
+  questions: UpdateUserDto[];
 }

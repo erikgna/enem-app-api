@@ -32,14 +32,8 @@ let QuestionsController = class QuestionsController {
     async findFiltered(filterObjects, headers) {
         const authToken = headers.authorization;
         const question = await this.questionsService.findByFilter(filterObjects);
-        if (!authToken)
+        if (!authToken || authToken.length < 10)
             return question;
-        console.log(this.jwtService.decode(authToken.split('')[1]));
-        const id = this.jwtService.decode(authToken.split(' ')[1]).sub;
-        await this.userService.addQuestion({
-            id,
-            newQuestion: question.id,
-        });
         return question;
     }
 };
@@ -50,8 +44,8 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], QuestionsController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Get)(":id"),
+    __param(0, (0, common_1.Param)("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
@@ -65,7 +59,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], QuestionsController.prototype, "findFiltered", null);
 QuestionsController = __decorate([
-    (0, common_1.Controller)('questions'),
+    (0, common_1.Controller)("questions"),
     __metadata("design:paramtypes", [question_service_1.QuestionsService,
         user_service_1.UserService,
         jwt_1.JwtService])

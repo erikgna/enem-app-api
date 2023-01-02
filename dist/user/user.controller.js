@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const jwt_auth_guard_1 = require("../auth/strategies/jwt-auth.guard");
 const create_user_dto_1 = require("./create-user.dto");
 const update_user_dto_1 = require("./update-user.dto");
 const user_service_1 = require("./user.service");
@@ -24,33 +23,26 @@ let UserController = class UserController {
         this.userService = userService;
         this.jwtService = jwtService;
     }
-    async findAll() {
-        return this.userService.findAll();
-    }
     async findOne(headers) {
-        const id = this.jwtService
-            .decode(headers.authorization.split(' ')[1])
-            .sub();
+        console.log(headers.authorization);
+        console.log("teste");
+        const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
         return this.userService.findUserQuestions(id);
     }
     async create(createUserDto) {
         return this.userService.createUser(createUserDto);
     }
-    async newQuestion(newQuestionDto) {
-        return this.userService.addQuestion(newQuestionDto);
+    async newQuestion(newQuestionDto, headers) {
+        const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+        return this.userService.addQuestion(newQuestionDto, id);
     }
-    async removeQuestion(removeQuestionDto) {
-        return this.userService.removeQuestion(removeQuestionDto);
+    async removeQuestion(questionId, headers) {
+        const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+        return this.userService.removeQuestion(questionId, id);
     }
 };
 __decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], UserController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)('/questions'),
+    (0, common_1.Get)("/questions"),
     __param(0, (0, common_1.Headers)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -64,22 +56,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "create", null);
 __decorate([
-    (0, common_1.Patch)('/new-question'),
+    (0, common_1.Patch)("/new-question"),
     __param(0, (0, common_1.Body)()),
+    __param(1, (0, common_1.Headers)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_user_dto_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [update_user_dto_1.UpdateUserDto, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "newQuestion", null);
 __decorate([
-    (0, common_1.Patch)('/remove-question'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Patch)("/remove-question/:questionId"),
+    __param(0, (0, common_1.Param)()),
+    __param(1, (0, common_1.Headers)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_user_dto_1.UpdateUserDto]),
+    __metadata("design:paramtypes", [String, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "removeQuestion", null);
 UserController = __decorate([
-    (0, common_1.Controller)('users'),
-    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, common_1.Controller)("users"),
     __metadata("design:paramtypes", [user_service_1.UserService,
         jwt_1.JwtService])
 ], UserController);

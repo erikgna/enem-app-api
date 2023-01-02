@@ -24,9 +24,6 @@ let UserService = class UserService {
         this.userRepository = userRepository;
         this.questionRepository = questionRepository;
     }
-    async findAll() {
-        return this.userRepository.find();
-    }
     async findOne(email) {
         return this.userRepository.findOne({ where: { email } });
     }
@@ -37,12 +34,18 @@ let UserService = class UserService {
         });
         const allQuestions = [];
         for (const item of userQuestions.questions) {
-            allQuestions.push(await this.questionRepository.findOne({
-                where: { id: item },
+            const question = await this.questionRepository.findOne({
+                where: { id: item.id },
                 select: {
                     name: true,
+                    url: true,
+                    rightAnswer: true,
                 },
-            }));
+            });
+            allQuestions.push({
+                question,
+                correct: item.correct,
+            });
         }
         return allQuestions;
     }
@@ -50,19 +53,19 @@ let UserService = class UserService {
         user.password = (0, bcrypt_1.hashSync)(user.password, 10);
         return this.userRepository.save(this.userRepository.create(user));
     }
-    async addQuestion(newQuestionDto) {
-        const oldUser = await this.userRepository.findOne({
-            where: { id: newQuestionDto.id },
+    async addQuestion(newQuestionDto, id) {
+        const user = await this.userRepository.findOne({
+            where: { id },
         });
-        oldUser.questions.push(newQuestionDto.newQuestion);
-        await this.userRepository.save(oldUser);
+        user.questions.push(newQuestionDto);
+        await this.userRepository.save(user);
     }
-    async removeQuestion(removeQuestionDto) {
-        const oldUser = await this.userRepository.findOne({
-            where: { id: removeQuestionDto.id },
+    async removeQuestion(questionId, id) {
+        const user = await this.userRepository.findOne({
+            where: { id },
         });
-        oldUser.questions = oldUser.questions.filter((item) => item !== removeQuestionDto.newQuestion);
-        await this.userRepository.save(oldUser);
+        user.questions = user.questions.filter((item) => item.id !== questionId);
+        await this.userRepository.save(user);
     }
 };
 UserService = __decorate([

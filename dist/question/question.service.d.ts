@@ -1,6 +1,6 @@
-import { Repository } from 'typeorm';
-import { IFilter } from './question.controller';
-import { Question } from './question.entity';
+import { Repository } from "typeorm";
+import { IFilter } from "./question.controller";
+import { Question } from "./question.entity";
 export declare class QuestionsService {
     private questionsRepository;
     constructor(questionsRepository: Repository<Question>);

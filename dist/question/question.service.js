@@ -22,7 +22,7 @@ var QueryStrings;
     QueryStrings["Random"] = "Random()";
     QueryStrings["Table"] = "question";
 })(QueryStrings || (QueryStrings = {}));
-const areas = ['naturais', 'matematica', 'humanas', 'linguagens'];
+const areas = ["naturais", "matematica", "humanas", "linguagens"];
 const years = [
     2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022,
 ];
@@ -37,6 +37,8 @@ let QuestionsService = class QuestionsService {
         return this.questionsRepository.findOne({ where: { url } });
     }
     async findByFilter(filter) {
+        console.log(filter.areas);
+        console.log(filter.areas);
         const randomArea = filter.areas.length === 0
             ? areas[Math.floor(Math.random() * areas.length)]
             : filter.areas[Math.floor(Math.random() * filter.areas.length)];
@@ -49,6 +51,7 @@ let QuestionsService = class QuestionsService {
             .where({ url: (0, typeorm_2.Like)(`%${randomArea}%`), name: (0, typeorm_2.Like)(`%${randomYear}%`) })
             .orderBy(QueryStrings.Random)
             .getOne();
+        console.log(question);
         if (!filter.userQuestions)
             return question;
         if (filter.userQuestions.length === 0)

@@ -1,12 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Question } from 'src/question/question.entity';
-import { Repository } from 'typeorm';
-import { CreateUserDto } from './create-user.dto';
-import { UpdateUserDto } from './update-user.dto';
-import { Users } from './user.entity';
-import { hashSync } from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Question } from "src/question/question.entity";
+import { Repository } from "typeorm";
+import { CreateUserDto } from "./create-user.dto";
+import { UpdateUserDto } from "./update-user.dto";
+import { Users } from "./user.entity";
+import { hashSync } from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -14,12 +13,8 @@ export class UserService {
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
     @InjectRepository(Question)
-    private questionRepository: Repository<Question>,
+    private questionRepository: Repository<Question>
   ) {}
-
-  async findAll(): Promise<Users[]> {
-    return this.userRepository.find();
-  }
 
   async findOne(email: string): Promise<Users> {
     return this.userRepository.findOne({ where: { email } });
@@ -34,14 +29,19 @@ export class UserService {
     const allQuestions = [];
 
     for (const item of userQuestions.questions) {
-      allQuestions.push(
-        await this.questionRepository.findOne({
-          where: { id: item },
-          select: {
-            name: true,
-          },
-        }),
-      );
+      const question = await this.questionRepository.findOne({
+        where: { id: item.id },
+        select: {
+          name: true,
+          url: true,
+          rightAnswer: true,
+        },
+      });
+
+      allQuestions.push({
+        question,
+        correct: item.correct,
+      });
     }
 
     return allQuestions;
@@ -52,25 +52,23 @@ export class UserService {
     return this.userRepository.save(this.userRepository.create(user));
   }
 
-  async addQuestion(newQuestionDto: UpdateUserDto) {
-    const oldUser = await this.userRepository.findOne({
-      where: { id: newQuestionDto.id },
+  async addQuestion(newQuestionDto: UpdateUserDto, id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
     });
 
-    oldUser.questions.push(newQuestionDto.newQuestion);
+    user.questions.push(newQuestionDto);
 
-    await this.userRepository.save(oldUser);
+    await this.userRepository.save(user);
   }
 
-  async removeQuestion(removeQuestionDto: UpdateUserDto) {
-    const oldUser = await this.userRepository.findOne({
-      where: { id: removeQuestionDto.id },
+  async removeQuestion(questionId: string, id: string) {
+    const user = await this.userRepository.findOne({
+      where: { id },
     });
 
-    oldUser.questions = oldUser.questions.filter(
-      (item) => item !== removeQuestionDto.newQuestion,
-    );
+    user.questions = user.questions.filter((item) => item.id !== questionId);
 
-    await this.userRepository.save(oldUser);
+    await this.userRepository.save(user);
   }
 }

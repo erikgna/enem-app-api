@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 let Users = class Users {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)('uuid'),
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
     __metadata("design:type", String)
 ], Users.prototype, "id", void 0);
 __decorate([
@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'json', default: [] }),
+    (0, typeorm_1.Column)({ type: "json", default: [] }),
     __metadata("design:type", Array)
 ], Users.prototype, "questions", void 0);
 Users = __decorate([

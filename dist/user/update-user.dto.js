@@ -19,9 +19,8 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateUserDto.prototype, "id", void 0);
 __decorate([
-    (0, class_validator_1.Length)(5),
     (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], UpdateUserDto.prototype, "newQuestion", void 0);
+    __metadata("design:type", Boolean)
+], UpdateUserDto.prototype, "correct", void 0);
 exports.UpdateUserDto = UpdateUserDto;
 //# sourceMappingURL=update-user.dto.js.map
