@@ -34,9 +34,9 @@ let UserController = class UserController {
         const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
         return this.userService.addQuestion(newQuestionDto, id);
     }
-    async removeQuestion(questionId, headers) {
+    async eraseHistory(headers) {
         const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
-        return this.userService.removeQuestion(questionId, id);
+        return this.userService.eraseHistory(id);
     }
 };
 __decorate([
@@ -62,13 +62,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "newQuestion", null);
 __decorate([
-    (0, common_1.Patch)("/remove-question/:questionId"),
-    __param(0, (0, common_1.Param)()),
-    __param(1, (0, common_1.Headers)()),
+    (0, common_1.Delete)("/erase-history"),
+    __param(0, (0, common_1.Headers)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
-], UserController.prototype, "removeQuestion", null);
+], UserController.prototype, "eraseHistory", null);
 UserController = __decorate([
     (0, common_1.Controller)("users"),
     __metadata("design:paramtypes", [user_service_1.UserService,

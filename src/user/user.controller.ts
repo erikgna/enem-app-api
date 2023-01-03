@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Headers,
   Param,
@@ -39,9 +40,9 @@ export class UserController {
     return this.userService.addQuestion(newQuestionDto, id);
   }
 
-  @Patch("/remove-question/:questionId")
-  async removeQuestion(@Param() questionId: string, @Headers() headers) {
+  @Delete("/erase-history")
+  async eraseHistory(@Headers() headers) {
     const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
-    return this.userService.removeQuestion(questionId, id);
+    return this.userService.eraseHistory(id);
   }
 }

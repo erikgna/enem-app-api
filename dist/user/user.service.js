@@ -60,11 +60,11 @@ let UserService = class UserService {
         user.questions.push(newQuestionDto);
         await this.userRepository.save(user);
     }
-    async removeQuestion(questionId, id) {
+    async eraseHistory(id) {
         const user = await this.userRepository.findOne({
             where: { id },
         });
-        user.questions = user.questions.filter((item) => item.id !== questionId);
+        user.questions = [];
         await this.userRepository.save(user);
     }
 };

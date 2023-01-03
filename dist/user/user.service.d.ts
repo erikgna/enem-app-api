@@ -11,5 +11,5 @@ export declare class UserService {
     findUserQuestions(id: string): Promise<any[]>;
     createUser(user: CreateUserDto): Promise<Users>;
     addQuestion(newQuestionDto: UpdateUserDto, id: string): Promise<void>;
-    removeQuestion(questionId: string, id: string): Promise<void>;
+    eraseHistory(id: string): Promise<void>;
 }

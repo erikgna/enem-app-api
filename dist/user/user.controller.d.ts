@@ -9,5 +9,5 @@ export declare class UserController {
     findOne(headers: any): Promise<any[]>;
     create(createUserDto: CreateUserDto): Promise<import("./user.entity").Users>;
     newQuestion(newQuestionDto: UpdateUserDto, headers: any): Promise<void>;
-    removeQuestion(questionId: string, headers: any): Promise<void>;
+    eraseHistory(headers: any): Promise<void>;
 }

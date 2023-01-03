@@ -62,12 +62,12 @@ export class UserService {
     await this.userRepository.save(user);
   }
 
-  async removeQuestion(questionId: string, id: string) {
+  async eraseHistory(id: string) {
     const user = await this.userRepository.findOne({
       where: { id },
     });
 
-    user.questions = user.questions.filter((item) => item.id !== questionId);
+    user.questions = [];
 
     await this.userRepository.save(user);
   }
