@@ -37,8 +37,6 @@ let QuestionsService = class QuestionsService {
         return this.questionsRepository.findOne({ where: { url } });
     }
     async findByFilter(filter) {
-        console.log(filter.areas);
-        console.log(filter.areas);
         const randomArea = filter.areas.length === 0
             ? areas[Math.floor(Math.random() * areas.length)]
             : filter.areas[Math.floor(Math.random() * filter.areas.length)];
@@ -51,7 +49,6 @@ let QuestionsService = class QuestionsService {
             .where({ url: (0, typeorm_2.Like)(`%${randomArea}%`), name: (0, typeorm_2.Like)(`%${randomYear}%`) })
             .orderBy(QueryStrings.Random)
             .getOne();
-        console.log(question);
         if (!filter.userQuestions)
             return question;
         if (filter.userQuestions.length === 0)

@@ -24,8 +24,6 @@ let UserController = class UserController {
         this.jwtService = jwtService;
     }
     async findOne(headers) {
-        console.log(headers.authorization);
-        console.log("teste");
         const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
         return this.userService.findUserQuestions(id);
     }

@@ -30,8 +30,6 @@ export class QuestionsService {
   }
 
   async findByFilter(filter: IFilter): Promise<Question> {
-    console.log(filter.areas);
-    console.log(filter.areas);
     const randomArea =
       filter.areas.length === 0
         ? areas[Math.floor(Math.random() * areas.length)]
@@ -48,8 +46,6 @@ export class QuestionsService {
       .where({ url: Like(`%${randomArea}%`), name: Like(`%${randomYear}%`) })
       .orderBy(QueryStrings.Random)
       .getOne();
-
-    console.log(question);
 
     if (!filter.userQuestions) return question;
     if (filter.userQuestions.length === 0) return question;
