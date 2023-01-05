@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionsService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
+const user_entity_1 = require("../user/user.entity");
 const typeorm_2 = require("typeorm");
 const question_entity_1 = require("./question.entity");
 var QueryStrings;
@@ -27,16 +28,14 @@ const years = [
     2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022,
 ];
 let QuestionsService = class QuestionsService {
-    constructor(questionsRepository) {
+    constructor(questionsRepository, usersRepository) {
         this.questionsRepository = questionsRepository;
-    }
-    async findAll() {
-        return this.questionsRepository.find();
+        this.usersRepository = usersRepository;
     }
     async findOne(url) {
         return this.questionsRepository.findOne({ where: { url } });
     }
-    async findByFilter(filter) {
+    async findByFilter(filter, id) {
         const randomArea = filter.areas.length === 0
             ? areas[Math.floor(Math.random() * areas.length)]
             : filter.areas[Math.floor(Math.random() * filter.areas.length)];
@@ -49,11 +48,11 @@ let QuestionsService = class QuestionsService {
             .where({ url: (0, typeorm_2.Like)(`%${randomArea}%`), name: (0, typeorm_2.Like)(`%${randomYear}%`) })
             .orderBy(QueryStrings.Random)
             .getOne();
-        if (!filter.userQuestions)
-            return question;
-        if (filter.userQuestions.length === 0)
-            return question;
-        while (filter.userQuestions.findIndex((item) => item === question.id) !== -1) {
+        const user = await this.usersRepository.findOne({
+            where: { id },
+            select: { questions: true },
+        });
+        while (user.questions.findIndex((item) => item.id === question.id) !== -1) {
             question = await this.questionsRepository
                 .createQueryBuilder(QueryStrings.Table)
                 .select()
@@ -67,7 +66,9 @@ let QuestionsService = class QuestionsService {
 QuestionsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(question_entity_1.Question)),
-    __metadata("design:paramtypes", [typeorm_2.Repository])
+    __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.Users)),
+    __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository])
 ], QuestionsService);
 exports.QuestionsService = QuestionsService;
 //# sourceMappingURL=question.service.js.map

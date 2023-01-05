@@ -24,18 +24,21 @@ let UserController = class UserController {
         this.jwtService = jwtService;
     }
     async findOne(headers) {
-        const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+        var _a;
+        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
         return this.userService.findUserQuestions(id);
     }
     async create(createUserDto) {
         return this.userService.createUser(createUserDto);
     }
     async newQuestion(newQuestionDto, headers) {
-        const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+        var _a;
+        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
         return this.userService.addQuestion(newQuestionDto, id);
     }
     async eraseHistory(headers) {
-        const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+        var _a;
+        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
         return this.userService.eraseHistory(id);
     }
 };

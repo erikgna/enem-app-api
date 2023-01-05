@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { Users } from "src/user/user.entity";
 import { Like, Repository } from "typeorm";
 import { IFilter } from "./question.controller";
 import { Question } from "./question.entity";
@@ -18,18 +19,16 @@ const years = [
 export class QuestionsService {
   constructor(
     @InjectRepository(Question)
-    private questionsRepository: Repository<Question>
+    private questionsRepository: Repository<Question>,
+    @InjectRepository(Users)
+    private usersRepository: Repository<Users>
   ) {}
-
-  async findAll(): Promise<Question[]> {
-    return this.questionsRepository.find();
-  }
 
   async findOne(url: string): Promise<Question> {
     return this.questionsRepository.findOne({ where: { url } });
   }
 
-  async findByFilter(filter: IFilter): Promise<Question> {
+  async findByFilter(filter: IFilter, id: string): Promise<Question> {
     const randomArea =
       filter.areas.length === 0
         ? areas[Math.floor(Math.random() * areas.length)]
@@ -47,12 +46,12 @@ export class QuestionsService {
       .orderBy(QueryStrings.Random)
       .getOne();
 
-    if (!filter.userQuestions) return question;
-    if (filter.userQuestions.length === 0) return question;
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      select: { questions: true },
+    });
 
-    while (
-      filter.userQuestions.findIndex((item) => item === question.id) !== -1
-    ) {
+    while (user.questions.findIndex((item) => item.id === question.id) !== -1) {
       question = await this.questionsRepository
         .createQueryBuilder(QueryStrings.Table)
         .select()
@@ -60,6 +59,7 @@ export class QuestionsService {
         .orderBy(QueryStrings.Random)
         .getOne();
     }
+
     return question;
   }
 }

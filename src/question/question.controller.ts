@@ -1,26 +1,18 @@
 import { Body, Controller, Get, Headers, Param, Post } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { UserService } from "src/user/user.service";
 import { QuestionsService } from "./question.service";
 
 export interface IFilter {
   areas: string[];
   years: string[];
-  userQuestions: string[];
 }
 
 @Controller("questions")
 export class QuestionsController {
   constructor(
     private readonly questionsService: QuestionsService,
-    private readonly userService: UserService,
     private readonly jwtService: JwtService
   ) {}
-
-  @Get()
-  async findAll() {
-    return this.questionsService.findAll();
-  }
 
   @Get(":id")
   async findOne(@Param("id") id: string) {
@@ -29,11 +21,12 @@ export class QuestionsController {
 
   @Post()
   async findFiltered(@Body() filterObjects: IFilter, @Headers() headers) {
-    const authToken = headers.authorization;
+    const id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
 
-    const question = await this.questionsService.findByFilter(filterObjects);
-
-    if (!authToken || authToken.length < 10) return question;
+    const question = await this.questionsService.findByFilter(
+      filterObjects,
+      id
+    );
 
     return question;
   }

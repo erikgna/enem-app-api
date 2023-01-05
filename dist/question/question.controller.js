@@ -15,34 +15,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionsController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const user_service_1 = require("../user/user.service");
 const question_service_1 = require("./question.service");
 let QuestionsController = class QuestionsController {
-    constructor(questionsService, userService, jwtService) {
+    constructor(questionsService, jwtService) {
         this.questionsService = questionsService;
-        this.userService = userService;
         this.jwtService = jwtService;
-    }
-    async findAll() {
-        return this.questionsService.findAll();
     }
     async findOne(id) {
         return this.questionsService.findOne(id);
     }
     async findFiltered(filterObjects, headers) {
-        const authToken = headers.authorization;
-        const question = await this.questionsService.findByFilter(filterObjects);
-        if (!authToken || authToken.length < 10)
-            return question;
+        var _a;
+        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
+        const question = await this.questionsService.findByFilter(filterObjects, id);
         return question;
     }
 };
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], QuestionsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(":id"),
     __param(0, (0, common_1.Param)("id")),
@@ -61,7 +49,6 @@ __decorate([
 QuestionsController = __decorate([
     (0, common_1.Controller)("questions"),
     __metadata("design:paramtypes", [question_service_1.QuestionsService,
-        user_service_1.UserService,
         jwt_1.JwtService])
 ], QuestionsController);
 exports.QuestionsController = QuestionsController;

@@ -25,7 +25,7 @@ export class UserController {
 
   @Get("/questions")
   async findOne(@Headers() headers) {
-    const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+    const id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
     return this.userService.findUserQuestions(id);
   }
 
@@ -36,13 +36,13 @@ export class UserController {
 
   @Patch("/new-question")
   async newQuestion(@Body() newQuestionDto: UpdateUserDto, @Headers() headers) {
-    const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+    const id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
     return this.userService.addQuestion(newQuestionDto, id);
   }
 
   @Delete("/erase-history")
   async eraseHistory(@Headers() headers) {
-    const id = this.jwtService.decode(headers.authorization.split(" ")[1]).sub;
+    const id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
     return this.userService.eraseHistory(id);
   }
 }
