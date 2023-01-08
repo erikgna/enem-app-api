@@ -15,8 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const create_user_dto_1 = require("./create-user.dto");
-const update_user_dto_1 = require("./update-user.dto");
+const jwt_auth_guard_1 = require("../auth/strategies/jwt-auth.guard");
+const create_user_dto_1 = require("./dto/create-user.dto");
+const update_user_dto_1 = require("./dto/update-user.dto");
 const user_service_1 = require("./user.service");
 let UserController = class UserController {
     constructor(userService, jwtService) {
@@ -24,26 +25,64 @@ let UserController = class UserController {
         this.jwtService = jwtService;
     }
     async findOne(headers) {
-        var _a;
-        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
-        return this.userService.findUserQuestions(id);
+        try {
+            const id = this.jwtService.decode(headers.authorization.split(" ")[1])["sub"];
+            return this.userService.findUserQuestions(id);
+        }
+        catch (error) {
+            throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
+        }
     }
     async create(createUserDto) {
-        return this.userService.createUser(createUserDto);
+        try {
+            const response = await this.userService.createUser(createUserDto);
+            if (response.status > 300) {
+                throw new common_1.HttpException(response.message, response.status);
+            }
+        }
+        catch (error) {
+            if (error instanceof common_1.HttpException) {
+                throw new common_1.HttpException(error.message, error.getStatus());
+            }
+            throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
+        }
     }
     async newQuestion(newQuestionDto, headers) {
         var _a;
-        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
-        return this.userService.addQuestion(newQuestionDto, id);
+        try {
+            const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
+            const response = await this.userService.addQuestion(newQuestionDto, id);
+            if (response.status > 300) {
+                throw new common_1.HttpException(response.message, response.status);
+            }
+        }
+        catch (error) {
+            if (error instanceof common_1.HttpException) {
+                throw new common_1.HttpException(error.message, error.getStatus());
+            }
+            throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
+        }
     }
     async eraseHistory(headers) {
         var _a;
-        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
-        return this.userService.eraseHistory(id);
+        try {
+            const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
+            const response = await this.userService.eraseHistory(id);
+            if (response.status > 300) {
+                throw new common_1.HttpException(response.message, response.status);
+            }
+        }
+        catch (error) {
+            if (error instanceof common_1.HttpException) {
+                throw new common_1.HttpException(error.message, error.getStatus());
+            }
+            throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
+        }
     }
 };
 __decorate([
     (0, common_1.Get)("/questions"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Headers)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -58,6 +97,7 @@ __decorate([
 ], UserController.prototype, "create", null);
 __decorate([
     (0, common_1.Patch)("/new-question"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.Headers)()),
     __metadata("design:type", Function),
@@ -66,6 +106,7 @@ __decorate([
 ], UserController.prototype, "newQuestion", null);
 __decorate([
     (0, common_1.Delete)("/erase-history"),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     __param(0, (0, common_1.Headers)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),

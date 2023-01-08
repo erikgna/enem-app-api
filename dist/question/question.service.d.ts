@@ -1,7 +1,7 @@
-import { Users } from "src/user/user.entity";
+import { Users } from "src/user/entity/user.entity";
 import { Repository } from "typeorm";
 import { IFilter } from "./question.controller";
-import { Question } from "./question.entity";
+import { Question } from "./entity/question.entity";
 export declare class QuestionsService {
     private questionsRepository;
     private usersRepository;

@@ -15,18 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionsService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("../user/user.entity");
+const user_entity_1 = require("../user/entity/user.entity");
 const typeorm_2 = require("typeorm");
-const question_entity_1 = require("./question.entity");
+const question_entity_1 = require("./entity/question.entity");
 var QueryStrings;
 (function (QueryStrings) {
     QueryStrings["Random"] = "Random()";
     QueryStrings["Table"] = "question";
 })(QueryStrings || (QueryStrings = {}));
 const areas = ["naturais", "matematica", "humanas", "linguagens"];
-const years = [
-    2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022,
-];
+const years = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022];
 let QuestionsService = class QuestionsService {
     constructor(questionsRepository, usersRepository) {
         this.questionsRepository = questionsRepository;
@@ -48,6 +46,9 @@ let QuestionsService = class QuestionsService {
             .where({ url: (0, typeorm_2.Like)(`%${randomArea}%`), name: (0, typeorm_2.Like)(`%${randomYear}%`) })
             .orderBy(QueryStrings.Random)
             .getOne();
+        if (!id) {
+            return question;
+        }
         const user = await this.usersRepository.findOne({
             where: { id },
             select: { questions: true },

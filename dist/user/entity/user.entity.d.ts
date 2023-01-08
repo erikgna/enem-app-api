@@ -1,4 +1,4 @@
-import { UpdateUserDto } from "./update-user.dto";
+import { UpdateUserDto } from "../dto/update-user.dto";
 export declare class Users {
     id: string;
     fullName: string;

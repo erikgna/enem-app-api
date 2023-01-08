@@ -2,8 +2,8 @@ import { Module } from "@nestjs/common";
 import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { Users } from "./user.entity";
-import { Question } from "src/question/question.entity";
+import { Users } from "./entity/user.entity";
+import { Question } from "src/question/entity/question.entity";
 import { JwtService } from "@nestjs/jwt";
 
 @Module({

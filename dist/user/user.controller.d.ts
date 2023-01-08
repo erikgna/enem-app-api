@@ -1,13 +1,14 @@
 import { JwtService } from "@nestjs/jwt";
-import { CreateUserDto } from "./create-user.dto";
-import { UpdateUserDto } from "./update-user.dto";
+import { IHeaders } from "src/interfaces/Headers";
+import { CreateUserDto } from "./dto/create-user.dto";
+import { UpdateUserDto } from "./dto/update-user.dto";
 import { UserService } from "./user.service";
 export declare class UserController {
     private readonly userService;
     private readonly jwtService;
     constructor(userService: UserService, jwtService: JwtService);
-    findOne(headers: any): Promise<any[]>;
-    create(createUserDto: CreateUserDto): Promise<import("./user.entity").Users>;
-    newQuestion(newQuestionDto: UpdateUserDto, headers: any): Promise<void>;
-    eraseHistory(headers: any): Promise<void>;
+    findOne(headers: IHeaders): Promise<any[]>;
+    create(createUserDto: CreateUserDto): Promise<void>;
+    newQuestion(newQuestionDto: UpdateUserDto, headers: IHeaders): Promise<void>;
+    eraseHistory(headers: IHeaders): Promise<void>;
 }

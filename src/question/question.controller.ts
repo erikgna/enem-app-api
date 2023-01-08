@@ -1,5 +1,15 @@
-import { Body, Controller, Get, Headers, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  Headers,
+  HttpException,
+  Param,
+  Post,
+} from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+
+import { IHeaders } from "src/interfaces/Headers";
 import { QuestionsService } from "./question.service";
 
 export interface IFilter {
@@ -16,18 +26,37 @@ export class QuestionsController {
 
   @Get(":id")
   async findOne(@Param("id") id: string) {
-    return this.questionsService.findOne(id);
+    try {
+      return this.questionsService.findOne(id);
+    } catch (error) {
+      throw new HttpException("Ocorreu um erro desconhecido.", 500);
+    }
   }
 
   @Post()
-  async findFiltered(@Body() filterObjects: IFilter, @Headers() headers) {
-    const id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
+  async findFiltered(
+    @Body() filterObjects: IFilter,
+    @Headers() headers: IHeaders
+  ) {
+    let id = null;
+    try {
+      id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
+    } catch (_) {
+      id = null;
+    }
 
-    const question = await this.questionsService.findByFilter(
-      filterObjects,
-      id
-    );
+    try {
+      const question = await this.questionsService.findByFilter(
+        filterObjects,
+        id
+      );
 
-    return question;
+      return question;
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw new HttpException(error.message, error.getStatus());
+      }
+      throw new HttpException("Ocorreu um erro desconhecido.", 500);
+    }
   }
 }

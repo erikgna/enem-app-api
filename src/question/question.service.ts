@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Users } from "src/user/user.entity";
+import { Users } from "src/user/entity/user.entity";
 import { Like, Repository } from "typeorm";
 import { IFilter } from "./question.controller";
-import { Question } from "./question.entity";
+import { Question } from "./entity/question.entity";
 
 enum QueryStrings {
   Random = "Random()",
@@ -11,9 +11,7 @@ enum QueryStrings {
 }
 
 const areas = ["naturais", "matematica", "humanas", "linguagens"];
-const years = [
-  2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022,
-];
+const years = [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2022];
 
 @Injectable()
 export class QuestionsService {
@@ -45,6 +43,10 @@ export class QuestionsService {
       .where({ url: Like(`%${randomArea}%`), name: Like(`%${randomYear}%`) })
       .orderBy(QueryStrings.Random)
       .getOne();
+
+    if (!id) {
+      return question;
+    }
 
     const user = await this.usersRepository.findOne({
       where: { id },

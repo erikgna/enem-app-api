@@ -22,13 +22,32 @@ let QuestionsController = class QuestionsController {
         this.jwtService = jwtService;
     }
     async findOne(id) {
-        return this.questionsService.findOne(id);
+        try {
+            return this.questionsService.findOne(id);
+        }
+        catch (error) {
+            throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
+        }
     }
     async findFiltered(filterObjects, headers) {
         var _a;
-        const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
-        const question = await this.questionsService.findByFilter(filterObjects, id);
-        return question;
+        let id = null;
+        try {
+            id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
+        }
+        catch (_) {
+            id = null;
+        }
+        try {
+            const question = await this.questionsService.findByFilter(filterObjects, id);
+            return question;
+        }
+        catch (error) {
+            if (error instanceof common_1.HttpException) {
+                throw new common_1.HttpException(error.message, error.getStatus());
+            }
+            throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
+        }
     }
 };
 __decorate([

@@ -1,4 +1,5 @@
 import { JwtService } from "@nestjs/jwt";
+import { IHeaders } from "src/interfaces/Headers";
 import { QuestionsService } from "./question.service";
 export interface IFilter {
     areas: string[];
@@ -8,6 +9,6 @@ export declare class QuestionsController {
     private readonly questionsService;
     private readonly jwtService;
     constructor(questionsService: QuestionsService, jwtService: JwtService);
-    findOne(id: string): Promise<import("./question.entity").Question>;
-    findFiltered(filterObjects: IFilter, headers: any): Promise<import("./question.entity").Question>;
+    findOne(id: string): Promise<import("./entity/question.entity").Question>;
+    findFiltered(filterObjects: IFilter, headers: IHeaders): Promise<import("./entity/question.entity").Question>;
 }

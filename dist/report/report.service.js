@@ -9,23 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateUserDto = void 0;
-const class_validator_1 = require("class-validator");
-class CreateUserDto {
-}
-__decorate([
-    (0, class_validator_1.Length)(5),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateUserDto.prototype, "fullName", void 0);
-__decorate([
-    (0, class_validator_1.IsEmail)(),
-    __metadata("design:type", String)
-], CreateUserDto.prototype, "email", void 0);
-__decorate([
-    (0, class_validator_1.Length)(6),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", String)
-], CreateUserDto.prototype, "password", void 0);
-exports.CreateUserDto = CreateUserDto;
-//# sourceMappingURL=create-user.dto.js.map
+exports.ReportService = void 0;
+const common_1 = require("@nestjs/common");
+const mailer_1 = require("@nestjs-modules/mailer");
+let ReportService = class ReportService {
+    constructor(mailService) {
+        this.mailService = mailService;
+    }
+    async sendReportToMail(report) {
+        await this.mailService.sendMail({
+            to: process.env.TO_EMAIL,
+            from: process.env.EMAIL_USER,
+            subject: "Report de Problema no app ENEM",
+            html: `<h3>ID da Questao: ${report.id}</h3><br /><p>${report.msg}</p>`,
+        });
+        return { status: 201 };
+    }
+};
+ReportService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [mailer_1.MailerService])
+], ReportService);
+exports.ReportService = ReportService;
+//# sourceMappingURL=report.service.js.map

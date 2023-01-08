@@ -1,14 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { compareSync } from 'bcrypt';
-import { Users } from '../user/user.entity';
-import { UserService } from '../user/user.service';
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { compareSync } from "bcrypt";
+import { Users } from "../user/entity/user.entity";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -17,6 +17,9 @@ export class AuthService {
       user = await this.userService.findOne(email);
     } catch (error) {
       return null;
+    }
+    if (!user) {
+      throw new UnauthorizedException("Password or email invalid.");
     }
 
     const isPasswordValid = compareSync(password, user.password);

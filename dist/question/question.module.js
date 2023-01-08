@@ -10,10 +10,10 @@ exports.QuestionsModule = void 0;
 const common_1 = require("@nestjs/common");
 const question_controller_1 = require("./question.controller");
 const question_service_1 = require("./question.service");
-const question_entity_1 = require("./question.entity");
+const question_entity_1 = require("./entity/question.entity");
 const typeorm_1 = require("@nestjs/typeorm");
 const user_service_1 = require("../user/user.service");
-const user_entity_1 = require("../user/user.entity");
+const user_entity_1 = require("../user/entity/user.entity");
 const jwt_1 = require("@nestjs/jwt");
 let QuestionsModule = class QuestionsModule {
 };

@@ -15,6 +15,8 @@ const serve_static_1 = require("@nestjs/serve-static");
 const path_1 = require("path");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
+const report_module_1 = require("./report/report.module");
+const mailer_1 = require("@nestjs-modules/mailer");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -22,21 +24,32 @@ AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             serve_static_1.ServeStaticModule.forRoot({
-                rootPath: (0, path_1.join)(__dirname, '..', 'public'),
-                serveRoot: '/public/',
+                rootPath: (0, path_1.join)(__dirname, "..", "public"),
+                serveRoot: "/public/",
             }),
             typeorm_1.TypeOrmModule.forRoot({
-                type: 'postgres',
-                host: 'localhost',
-                port: 55000,
-                username: 'postgres',
-                password: 'postgrespw',
-                database: 'postgres',
-                entities: [__dirname + '/**/*.entity{.js,.ts}'],
+                type: "postgres",
+                host: process.env.DB_HOST,
+                port: parseInt(process.env.DB_PORT),
+                username: process.env.USERNAME,
+                password: process.env.PASSWORD,
+                database: process.env.DATABASE,
+                entities: [__dirname + "/**/*.entity{.js,.ts}"],
                 synchronize: true,
+            }),
+            mailer_1.MailerModule.forRoot({
+                transport: {
+                    service: process.env.EMAIL_SERVICE,
+                    host: process.env.EMAIL_HOST,
+                    auth: {
+                        user: process.env.EMAIL_USER,
+                        pass: process.env.EMAIL_PASSWORD,
+                    },
+                },
             }),
             question_module_1.QuestionsModule,
             user_module_1.UserModule,
+            report_module_1.ReportModule,
             auth_module_1.AuthModule,
         ],
     })

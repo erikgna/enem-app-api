@@ -11,8 +11,8 @@ const common_1 = require("@nestjs/common");
 const user_controller_1 = require("./user.controller");
 const user_service_1 = require("./user.service");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = require("./user.entity");
-const question_entity_1 = require("../question/question.entity");
+const user_entity_1 = require("./entity/user.entity");
+const question_entity_1 = require("../question/entity/question.entity");
 const jwt_1 = require("@nestjs/jwt");
 let UserModule = class UserModule {
 };

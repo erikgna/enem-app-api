@@ -27,6 +27,9 @@ let AuthService = class AuthService {
         catch (error) {
             return null;
         }
+        if (!user) {
+            throw new common_1.UnauthorizedException("Password or email invalid.");
+        }
         const isPasswordValid = (0, bcrypt_1.compareSync)(password, user.password);
         if (!isPasswordValid)
             return null;

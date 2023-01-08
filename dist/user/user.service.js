@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const question_entity_1 = require("../question/question.entity");
+const question_entity_1 = require("../question/entity/question.entity");
 const typeorm_2 = require("typeorm");
-const user_entity_1 = require("./user.entity");
+const user_entity_1 = require("./entity/user.entity");
 const bcrypt_1 = require("bcrypt");
 let UserService = class UserService {
     constructor(userRepository, questionRepository) {
@@ -50,8 +50,18 @@ let UserService = class UserService {
         return allQuestions;
     }
     async createUser(user) {
+        if (user.password !== user.confirmPassword) {
+            return { message: "As senhas são diferentes.", status: 400 };
+        }
+        const existUser = await this.userRepository.count({
+            where: { email: user.email },
+        });
+        if (existUser > 0) {
+            return { message: "O email já está em uso.", status: 400 };
+        }
         user.password = (0, bcrypt_1.hashSync)(user.password, 10);
-        return this.userRepository.save(this.userRepository.create(user));
+        await this.userRepository.save(this.userRepository.create(user));
+        return { status: 201 };
     }
     async addQuestion(newQuestionDto, id) {
         const user = await this.userRepository.findOne({
@@ -59,6 +69,7 @@ let UserService = class UserService {
         });
         user.questions.push(newQuestionDto);
         await this.userRepository.save(user);
+        return { status: 200 };
     }
     async eraseHistory(id) {
         const user = await this.userRepository.findOne({
@@ -66,6 +77,7 @@ let UserService = class UserService {
         });
         user.questions = [];
         await this.userRepository.save(user);
+        return { status: 200 };
     }
 };
 UserService = __decorate([

@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
+const class_validator_1 = require("class-validator");
 const typeorm_1 = require("typeorm");
 let Users = class Users {
 };
@@ -18,15 +19,17 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: false }),
+    (0, class_validator_1.Length)(3),
     __metadata("design:type", String)
 ], Users.prototype, "fullName", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ unique: true, nullable: false }),
     __metadata("design:type", String)
 ], Users.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: false }),
+    (0, class_validator_1.Length)(6),
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
 __decorate([
