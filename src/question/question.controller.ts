@@ -38,6 +38,7 @@ export class QuestionsController {
     @Body() filterObjects: IFilter,
     @Headers() headers: IHeaders
   ) {
+    console.log(filterObjects);
     let id = null;
     try {
       id = this.jwtService.decode(headers.authorization.split(" ")[1])?.sub;
