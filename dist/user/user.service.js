@@ -67,8 +67,11 @@ let UserService = class UserService {
         const user = await this.userRepository.findOne({
             where: { id },
         });
-        user.questions.push(newQuestionDto);
-        await this.userRepository.save(user);
+        const checkHasId = user.questions.find((item) => item.id === newQuestionDto.id);
+        if (checkHasId === undefined) {
+            user.questions.push(newQuestionDto);
+            await this.userRepository.save(user);
+        }
         return { status: 200 };
     }
     async eraseHistory(id) {

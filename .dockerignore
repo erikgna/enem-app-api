@@ -3,6 +3,7 @@ Dockerfile
 node_modules
 npm-debug.log
 dist
+sql.sql
 
 DB_TYPE=postgres
 DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
