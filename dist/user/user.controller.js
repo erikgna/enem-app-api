@@ -26,7 +26,7 @@ let UserController = class UserController {
     }
     async findOne(headers) {
         try {
-            const id = this.jwtService.decode(headers.authorization.split(" ")[1])["sub"];
+            const id = this.jwtService.decode(headers.authorization.replace("Bearer ", "").replace(" ", ""))["sub"];
             return this.userService.findUserQuestions(id);
         }
         catch (error) {
@@ -50,7 +50,7 @@ let UserController = class UserController {
     async newQuestion(newQuestionDto, headers) {
         var _a;
         try {
-            const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
+            const id = (_a = this.jwtService.decode(headers.authorization.replace("Bearer ", "").replace(" ", ""))) === null || _a === void 0 ? void 0 : _a.sub;
             const response = await this.userService.addQuestion(newQuestionDto, id);
             if (response.status > 300) {
                 throw new common_1.HttpException(response.message, response.status);
@@ -66,7 +66,7 @@ let UserController = class UserController {
     async eraseHistory(headers) {
         var _a;
         try {
-            const id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
+            const id = (_a = this.jwtService.decode(headers.authorization.replace("Bearer ", "").replace(" ", ""))) === null || _a === void 0 ? void 0 : _a.sub;
             const response = await this.userService.eraseHistory(id);
             if (response.status > 300) {
                 throw new common_1.HttpException(response.message, response.status);

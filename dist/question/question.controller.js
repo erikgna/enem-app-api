@@ -40,7 +40,7 @@ let QuestionsController = class QuestionsController {
         }
         try {
             const question = await this.questionsService.findByFilter(filterObjects, id);
-            return question;
+            return question[0];
         }
         catch (error) {
             if (error instanceof common_1.HttpException) {

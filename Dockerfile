@@ -4,12 +4,12 @@
 
 FROM node:18-alpine As development
 
-ENV DB_TYPE=postgres
-ENV DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
-ENV DB_PORT=5432
-ENV USERNAME=postgres
-ENV PASSWORD=Erik2202*
-ENV DATABASE=postgres
+ENV DB_TYPE=mysql
+ENV DB_HOST=erikna.com
+ENV DB_PORT=3306
+ENV USERNAME=eriknaco_1
+ENV PASSWORD=Erik2202***
+ENV DATABASE=eriknaco_unsolved
 
 ENV EMAIL_SERVICE=gmail
 ENV EMAIL_HOST=smtp.gmail.com
@@ -41,12 +41,12 @@ USER node
 
 FROM node:18-alpine As build
 
-ENV DB_TYPE=postgres
-ENV DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
-ENV DB_PORT=5432
-ENV USERNAME=postgres
-ENV PASSWORD=Erik2202*
-ENV DATABASE=postgres
+ENV DB_TYPE=mysql
+ENV DB_HOST=erikna.com
+ENV DB_PORT=3306
+ENV USERNAME=eriknaco_1
+ENV PASSWORD=Erik2202***
+ENV DATABASE=eriknaco_unsolved
 
 ENV EMAIL_SERVICE=gmail
 ENV EMAIL_HOST=smtp.gmail.com
@@ -61,7 +61,6 @@ COPY --chown=node:node package*.json ./
 
 # In order to run `npm run build` we need access to the Nest CLI which is a dev dependency. In the previous development stage we ran `npm ci` which installed all dependencies, so we can copy over the node_modules directory from the development image
 COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=development /usr/src/app/public ./public
 
 COPY --chown=node:node . .
 
@@ -82,12 +81,12 @@ USER node
 
 FROM node:18-alpine As production
 
-ENV DB_TYPE=postgres
-ENV DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
-ENV DB_PORT=5432
-ENV USERNAME=postgres
-ENV PASSWORD=Erik2202*
-ENV DATABASE=postgres
+ENV DB_TYPE=mysql
+ENV DB_HOST=erikna.com
+ENV DB_PORT=3306
+ENV USERNAME=eriknaco_1
+ENV PASSWORD=Erik2202***
+ENV DATABASE=eriknaco_unsolved
 
 ENV EMAIL_SERVICE=gmail
 ENV EMAIL_HOST=smtp.gmail.com
@@ -98,7 +97,6 @@ ENV TO_EMAIL=erikgnaa@gmail.com
 
 # Copy the bundled code from the build stage to the production image
 COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/public ./public
 COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
 # Start the server using the production build

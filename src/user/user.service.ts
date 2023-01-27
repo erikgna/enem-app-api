@@ -62,7 +62,9 @@ export class UserService {
     }
 
     user.password = hashSync(user.password, 10);
-    await this.userRepository.save(this.userRepository.create(user));
+    await this.userRepository.save(
+      this.userRepository.create({ ...user, questions: [] })
+    );
 
     return { status: 201 };
   }

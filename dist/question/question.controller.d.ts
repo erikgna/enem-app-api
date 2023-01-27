@@ -10,5 +10,5 @@ export declare class QuestionsController {
     private readonly jwtService;
     constructor(questionsService: QuestionsService, jwtService: JwtService);
     findOne(id: string): Promise<import("./entity/question.entity").Question>;
-    findFiltered(filterObjects: IFilter, headers: IHeaders): Promise<import("./entity/question.entity").Question>;
+    findFiltered(filterObjects: IFilter, headers: IHeaders): Promise<any>;
 }

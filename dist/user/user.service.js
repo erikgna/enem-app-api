@@ -60,7 +60,7 @@ let UserService = class UserService {
             return { message: "O email já está em uso.", status: 400 };
         }
         user.password = (0, bcrypt_1.hashSync)(user.password, 10);
-        await this.userRepository.save(this.userRepository.create(user));
+        await this.userRepository.save(this.userRepository.create(Object.assign(Object.assign({}, user), { questions: [] })));
         return { status: 201 };
     }
     async addQuestion(newQuestionDto, id) {

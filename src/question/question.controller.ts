@@ -51,7 +51,7 @@ export class QuestionsController {
         id
       );
 
-      return question;
+      return question[0];
     } catch (error) {
       if (error instanceof HttpException) {
         throw new HttpException(error.message, error.getStatus());

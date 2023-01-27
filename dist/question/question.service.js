@@ -40,12 +40,7 @@ let QuestionsService = class QuestionsService {
         const randomYear = filter.years.length === 0
             ? years[Math.floor(Math.random() * years.length)]
             : filter.years[Math.floor(Math.random() * filter.years.length)];
-        let question = await this.questionsRepository
-            .createQueryBuilder(QueryStrings.Table)
-            .select()
-            .where({ url: (0, typeorm_2.Like)(`%${randomArea}%`), name: (0, typeorm_2.Like)(`%${randomYear}%`) })
-            .orderBy(QueryStrings.Random)
-            .getOne();
+        let question = await this.questionsRepository.query(`SELECT * FROM question WHERE url LIKE '%${randomArea}%' AND name LIKE '%${randomYear}%' ORDER BY RAND() LIMIT 1`);
         if (!id) {
             return question;
         }

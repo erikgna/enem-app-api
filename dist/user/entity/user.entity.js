@@ -33,7 +33,7 @@ __decorate([
     __metadata("design:type", String)
 ], Users.prototype, "password", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: "json", default: [] }),
+    (0, typeorm_1.Column)({ type: "json" }),
     __metadata("design:type", Array)
 ], Users.prototype, "questions", void 0);
 Users = __decorate([

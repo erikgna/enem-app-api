@@ -1,4 +1,4 @@
-import { IAnswers } from 'src/interfaces/Answers';
+import { IAnswers } from "src/interfaces/Answers";
 export declare class Question {
     id: string;
     url: string;
