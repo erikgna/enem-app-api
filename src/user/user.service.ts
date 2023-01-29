@@ -62,7 +62,9 @@ export class UserService {
     }
 
     user.password = hashSync(user.password, 10);
-    await this.userRepository.save(this.userRepository.create(user));
+    await this.userRepository.save(
+      this.userRepository.create({ ...user, questions: [] })
+    );
 
     return { status: 201 };
   }
@@ -75,9 +77,14 @@ export class UserService {
       where: { id },
     });
 
-    user.questions.push(newQuestionDto);
+    const checkHasId = user.questions.find(
+      (item) => item.id === newQuestionDto.id
+    );
 
-    await this.userRepository.save(user);
+    if (checkHasId === undefined) {
+      user.questions.push(newQuestionDto);
+      await this.userRepository.save(user);
+    }
 
     return { status: 200 };
   }

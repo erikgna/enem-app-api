@@ -60,15 +60,18 @@ let UserService = class UserService {
             return { message: "O email já está em uso.", status: 400 };
         }
         user.password = (0, bcrypt_1.hashSync)(user.password, 10);
-        await this.userRepository.save(this.userRepository.create(user));
+        await this.userRepository.save(this.userRepository.create(Object.assign(Object.assign({}, user), { questions: [] })));
         return { status: 201 };
     }
     async addQuestion(newQuestionDto, id) {
         const user = await this.userRepository.findOne({
             where: { id },
         });
-        user.questions.push(newQuestionDto);
-        await this.userRepository.save(user);
+        const checkHasId = user.questions.find((item) => item.id === newQuestionDto.id);
+        if (checkHasId === undefined) {
+            user.questions.push(newQuestionDto);
+            await this.userRepository.save(user);
+        }
         return { status: 200 };
     }
     async eraseHistory(id) {

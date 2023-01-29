@@ -1,9 +1,9 @@
-import { IAnswers } from 'src/interfaces/Answers';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { IAnswers } from "src/interfaces/Answers";
+import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Question {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -12,13 +12,13 @@ export class Question {
   @Column()
   name: string;
 
-  @Column()
+  @Column("longtext")
   description: string;
 
-  @Column()
+  @Column("longtext")
   ask: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: "json" })
   answers: IAnswers;
 
   @Column()

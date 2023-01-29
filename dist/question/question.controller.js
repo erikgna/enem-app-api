@@ -31,7 +31,6 @@ let QuestionsController = class QuestionsController {
     }
     async findFiltered(filterObjects, headers) {
         var _a;
-        console.log(filterObjects);
         let id = null;
         try {
             id = (_a = this.jwtService.decode(headers.authorization.split(" ")[1])) === null || _a === void 0 ? void 0 : _a.sub;
@@ -41,7 +40,7 @@ let QuestionsController = class QuestionsController {
         }
         try {
             const question = await this.questionsService.findByFilter(filterObjects, id);
-            return question;
+            return question[0];
         }
         catch (error) {
             if (error instanceof common_1.HttpException) {

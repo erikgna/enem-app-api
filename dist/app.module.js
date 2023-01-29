@@ -11,8 +11,6 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const config_1 = require("@nestjs/config");
 const question_module_1 = require("./question/question.module");
-const serve_static_1 = require("@nestjs/serve-static");
-const path_1 = require("path");
 const user_module_1 = require("./user/user.module");
 const auth_module_1 = require("./auth/auth.module");
 const report_module_1 = require("./report/report.module");
@@ -23,12 +21,8 @@ AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot(),
-            serve_static_1.ServeStaticModule.forRoot({
-                rootPath: (0, path_1.join)(__dirname, "..", "public"),
-                serveRoot: "/public/",
-            }),
             typeorm_1.TypeOrmModule.forRoot({
-                type: "postgres",
+                type: "mysql",
                 host: process.env.DB_HOST,
                 port: parseInt(process.env.DB_PORT),
                 username: process.env.USERNAME,

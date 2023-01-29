@@ -27,9 +27,9 @@ export class UserController {
   @UseGuards(JwtAuthGuard)
   async findOne(@Headers() headers: IHeaders) {
     try {
-      const id = this.jwtService.decode(headers.authorization.split(" ")[1])[
-        "sub"
-      ];
+      const id = this.jwtService.decode(
+        headers.authorization.replace("Bearer ", "").replace(" ", "")
+      )["sub"];
 
       return this.userService.findUserQuestions(id);
     } catch (error) {
@@ -61,7 +61,7 @@ export class UserController {
   ) {
     try {
       const id = this.jwtService.decode(
-        headers.authorization.split(" ")[1]
+        headers.authorization.replace("Bearer ", "").replace(" ", "")
       )?.sub;
 
       const response = await this.userService.addQuestion(newQuestionDto, id);
@@ -82,7 +82,7 @@ export class UserController {
   async eraseHistory(@Headers() headers: IHeaders) {
     try {
       const id = this.jwtService.decode(
-        headers.authorization.split(" ")[1]
+        headers.authorization.replace("Bearer ", "").replace(" ", "")
       )?.sub;
 
       const response = await this.userService.eraseHistory(id);

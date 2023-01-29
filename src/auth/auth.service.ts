@@ -12,6 +12,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string) {
+    console.log("teste4");
     let user: Users;
     try {
       user = await this.userService.findOne(email);
@@ -29,6 +30,7 @@ export class AuthService {
   }
 
   async login(user: any) {
+    console.log("teste5");
     const payload = { sub: user.id, email: user.email };
 
     return {

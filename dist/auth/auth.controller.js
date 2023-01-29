@@ -22,20 +22,20 @@ let AuthController = class AuthController {
     }
     async login(req) {
         return this.authService.login(req.user).catch(() => {
-            throw new common_1.HttpException('Não foi possível realizar o login.', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException("Não foi possível realizar o login.", common_1.HttpStatus.BAD_REQUEST);
         });
     }
 };
 __decorate([
-    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('local')),
-    (0, common_1.Post)('login'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)("local")),
+    (0, common_1.Post)("login"),
     __param(0, (0, common_1.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "login", null);
 AuthController = __decorate([
-    (0, common_1.Controller)('auth'),
+    (0, common_1.Controller)("auth"),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthController);
 exports.AuthController = AuthController;

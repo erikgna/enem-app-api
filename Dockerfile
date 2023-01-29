@@ -4,12 +4,12 @@
 
 FROM node:18-alpine As development
 
-ENV DB_TYPE=postgres
-ENV DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
-ENV DB_PORT=5432
-ENV USERNAME=postgres
-ENV PASSWORD=Erik2202*
-ENV DATABASE=postgres
+ENV DB_TYPE=mysql
+ENV DB_HOST=erikna.com
+ENV DB_PORT=3306
+ENV USERNAME=eriknaco_1
+ENV PASSWORD=Erik2202***
+ENV DATABASE=eriknaco_unsolved
 
 ENV EMAIL_SERVICE=gmail
 ENV EMAIL_HOST=smtp.gmail.com
@@ -41,12 +41,12 @@ USER node
 
 FROM node:18-alpine As build
 
-ENV DB_TYPE=postgres
-ENV DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
-ENV DB_PORT=5432
-ENV USERNAME=postgres
-ENV PASSWORD=Erik2202*
-ENV DATABASE=postgres
+ENV DB_TYPE=mysql
+ENV DB_HOST=erikna.com
+ENV DB_PORT=3306
+ENV USERNAME=eriknaco_1
+ENV PASSWORD=Erik2202***
+ENV DATABASE=eriknaco_unsolved
 
 ENV EMAIL_SERVICE=gmail
 ENV EMAIL_HOST=smtp.gmail.com
@@ -81,12 +81,12 @@ USER node
 
 FROM node:18-alpine As production
 
-ENV DB_TYPE=postgres
-ENV DB_HOST=enem.ck2lneoorlhn.us-east-1.rds.amazonaws.com
-ENV DB_PORT=5432
-ENV USERNAME=postgres
-ENV PASSWORD=Erik2202*
-ENV DATABASE=postgres
+ENV DB_TYPE=mysql
+ENV DB_HOST=erikna.com
+ENV DB_PORT=3306
+ENV USERNAME=eriknaco_1
+ENV PASSWORD=Erik2202***
+ENV DATABASE=eriknaco_unsolved
 
 ENV EMAIL_SERVICE=gmail
 ENV EMAIL_HOST=smtp.gmail.com

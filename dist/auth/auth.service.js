@@ -20,6 +20,7 @@ let AuthService = class AuthService {
         this.jwtService = jwtService;
     }
     async validateUser(email, password) {
+        console.log("teste4");
         let user;
         try {
             user = await this.userService.findOne(email);
@@ -36,6 +37,7 @@ let AuthService = class AuthService {
         return user;
     }
     async login(user) {
+        console.log("teste5");
         const payload = { sub: user.id, email: user.email };
         return {
             token: this.jwtService.sign(payload),

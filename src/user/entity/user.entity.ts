@@ -18,6 +18,6 @@ export class Users {
   @Length(6)
   password: string;
 
-  @Column({ type: "json", default: [] })
+  @Column({ type: "json" })
   questions: UpdateUserDto[];
 }
