@@ -1,0 +1,19 @@
+version: "3.7"
+
+networks:
+  web:
+    external: true
+
+services:
+  nest_app:
+    build: .
+    container_name: enem_api
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nest.rule=Host(`enemapi.erikna.com`)
+      - traefik.http.routers.nest.entrypoints=web, websecure
+      - traefik.http.routers.nest.tls=true
+      - traefik.http.routers.nest.tls.certresolver=production
+    networks:
+      - web
+    restart: unless-stopped
