@@ -30,7 +30,7 @@ let QuestionsController = class QuestionsController {
         }
     }
     async teste() {
-        return "teste";
+        return { teste: "teste" };
     }
     async findFiltered(filterObjects, headers) {
         var _a;
