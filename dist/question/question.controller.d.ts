@@ -10,5 +10,6 @@ export declare class QuestionsController {
     private readonly jwtService;
     constructor(questionsService: QuestionsService, jwtService: JwtService);
     findOne(id: string): Promise<import("./entity/question.entity").Question>;
+    teste(): Promise<string>;
     findFiltered(filterObjects: IFilter, headers: IHeaders): Promise<any>;
 }

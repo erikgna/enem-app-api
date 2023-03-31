@@ -13,7 +13,7 @@ services:
       - traefik.http.routers.nest.rule=Host(`enemapi.erikna.com`)
       - traefik.http.routers.nest.entrypoints=web, websecure
       - traefik.http.routers.nest.tls=true
-      - traefik.http.services.nest.loadbalancer.server.port=8060
+      - traefik.http.services.nest.loadbalancer.server.port=8050
       - traefik.http.routers.nest.tls.certresolver=production
     networks:
       - web
