@@ -1,5 +1,5 @@
 # Define a imagem base
-FROM node:14-alpine
+FROM node:18-alpine
 
 # Define o diretório de trabalho
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Instala as dependências
-RUN npm ci
+RUN npm i
 
 # Copia o resto dos arquivos
 COPY . .
