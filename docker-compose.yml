@@ -8,6 +8,8 @@ services:
   nest_app:
     build: .
     container_name: enem_api
+    ports:
+      - "8050:8050"
     labels:
       - traefik.enable=true
       - traefik.http.routers.nest.rule=Host(`enemapi.erikna.com`)
