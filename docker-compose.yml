@@ -1,15 +1,29 @@
 version: "3.7"
 
+name: enem
+
 networks:
   web:
     external: true
 
 services:
-  nest_app:
+  enem_web:
+    build: ../web
+    container_name: enem_web
+    restart: always
+    depends_on:
+      - enem_server
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.enem.rule=Host(`enem.erikna.com`)"
+      - "traefik.http.routers.enem.entrypoints=web, websecure"
+      - "traefik.http.routers.enem.tls=true"
+      - "traefik.http.routers.enem.tls.certresolver=production"
+    networks:
+      - web
+  enem_server:
     build: .
-    container_name: enem_api
-    ports:
-      - "8050:8050"
+    container_name: enem_server    
     labels:
       - traefik.enable=true
       - traefik.http.routers.nest.rule=Host(`enemapi.erikna.com`)
@@ -19,4 +33,4 @@ services:
       - traefik.http.routers.nest.tls.certresolver=production
     networks:
       - web
-    restart: unless-stopped
+    restart: always
