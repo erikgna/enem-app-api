@@ -29,6 +29,9 @@ let QuestionsController = class QuestionsController {
             throw new common_1.HttpException("Ocorreu um erro desconhecido.", 500);
         }
     }
+    async teste() {
+        return { teste: "teste" };
+    }
     async findFiltered(filterObjects, headers) {
         var _a;
         let id = null;
@@ -57,6 +60,12 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], QuestionsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)("teste"),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], QuestionsController.prototype, "teste", null);
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
