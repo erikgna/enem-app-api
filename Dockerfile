@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm ci
+RUN npm i
 
 COPY . .
 
@@ -18,7 +18,7 @@ WORKDIR /app
 
 COPY package.json ./
 
-RUN npm ci
+RUN npm i
 
 COPY --from=builder /app/dist ./dist
 
