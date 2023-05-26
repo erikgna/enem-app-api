@@ -15,9 +15,9 @@ import { join } from "path";
     }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
-      type: "mysql",
+      type: "postgres",
       host: "enem_db",
-      port: 3306,
+      port: 5432,
       username: "root",
       password: "Erik2202*",
       database: "enem",
