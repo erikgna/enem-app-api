@@ -7,23 +7,37 @@ networks:
     external: true
 
 services:
-  enem_web:
-    build: ../web
-    container_name: enem_web
-    restart: always
-    depends_on:
-      - enem_server
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.enem.rule=Host(`enem.erikna.com`)"
-      - "traefik.http.routers.enem.entrypoints=web, websecure"
-      - "traefik.http.routers.enem.tls=true"
-      - "traefik.http.routers.enem.tls.certresolver=production"
+  enem_db:
     networks:
       - web
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Erik2202*
+      MYSQL_DATABASE: enem
+    volumes:
+      - ./scripts:/docker-entrypoint-initdb.d
+  # enem_web:
+  #   build: ../web
+  #   container_name: enem_web
+  #   restart: always
+  #   depends_on:
+  #     - enem_server
+  # labels:
+  #   - "traefik.enable=true"
+  #   - "traefik.http.routers.enem.rule=Host(`enem.erikna.com`)"
+  #   - "traefik.http.routers.enem.entrypoints=web, websecure"
+  #   - "traefik.http.routers.enem.tls=true"
+  #   - "traefik.http.routers.enem.tls.certresolver=production"
+  # networks:
+  #   - web
   enem_server:
     build: .
-    container_name: enem_server    
+    container_name: enem_server
+    ports:
+      - "8050:8050"
+    depends_on:
+      - enem_db
     labels:
       - traefik.enable=true
       - traefik.http.routers.nest.rule=Host(`enemapi.erikna.com`)

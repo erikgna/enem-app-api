@@ -1,20 +1,27 @@
-# Define a imagem base
-FROM node:18-alpine
+# Estágio de compilação
+FROM node:14-alpine as builder
 
-# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia os arquivos necessários
 COPY package.json ./
+COPY yarn.lock ./
 
-# Instala as dependências
-RUN npm i
+RUN yarn install --production --frozen-lockfile
 
-# Copia o resto dos arquivos
 COPY . .
 
-# Define a porta do servidor
-EXPOSE 8050
+RUN yarn build
 
-# Inicia a aplicação
-CMD [ "npm", "start" ]
+# Estágio de produção
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY package.json ./
+COPY yarn.lock ./
+
+RUN yarn install --production --frozen-lockfile
+
+COPY --from=builder /app/dist ./dist
+
+CMD ["node", "dist/main"]

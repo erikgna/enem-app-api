@@ -6,17 +6,21 @@ import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
 import { ReportModule } from "./report/report.module";
 import { MailerModule } from "@nestjs-modules/mailer";
-
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "public"),
+    }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "mysql",
-      host: "erikna.com",
+      host: "enem_db",
       port: 3306,
-      username: "eriknaco_1",
-      password: "Erik2202***",
-      database: "eriknaco_unsolved",
+      username: "root",
+      password: "Erik2202*",
+      database: "enem",
       entities: [__dirname + "/**/*.entity{.js,.ts}"],
       synchronize: true,
     }),
