@@ -1,25 +1,20 @@
-# Estágio de compilação
-FROM node:14-alpine as builder
+# Define a imagem base
+FROM node:18-alpine
 
+# Define o diretório de trabalho
 WORKDIR /app
 
+# Copia os arquivos necessários
 COPY package.json ./
 
+# Instala as dependências
 RUN npm i
 
+# Copia o resto dos arquivos
 COPY . .
 
-RUN yarn build
+# Define a porta do servidor
+EXPOSE 8050
 
-# Estágio de produção
-FROM node:14-alpine
-
-WORKDIR /app
-
-COPY package.json ./
-
-RUN npm i
-
-COPY --from=builder /app/dist ./dist
-
-CMD ["node", "dist/main"]
+# Inicia a aplicação
+CMD [ "npm", "start" ]
