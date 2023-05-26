@@ -26,11 +26,10 @@ import { join } from "path";
     }),
     MailerModule.forRoot({
       transport: {
-        service: process.env.EMAIL_SERVICE,
-        host: process.env.EMAIL_HOST,
+        host: "sandbox.smtp.mailtrap.io",
         auth: {
-          user: process.env.EMAIL_USER,
-          pass: process.env.EMAIL_PASSWORD,
+          user: "c425e8528c1066",
+          pass: "58643a055a9203",
         },
       },
     }),

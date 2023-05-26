@@ -33,12 +33,6 @@ export class QuestionsController {
     }
   }
 
-  @Get("teste")
-  async teste() {
-    console.log("teste");
-    return { teste: "teste" };
-  }
-
   @Post()
   async findFiltered(
     @Body() filterObjects: IFilter,

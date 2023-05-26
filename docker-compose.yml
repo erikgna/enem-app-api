@@ -4,9 +4,11 @@ name: enem
 
 networks:
   web:
+    external: true
 
 services:
   enem_db:
+    container_name: enem_db
     image: postgres:latest
     restart: always
     networks:
@@ -15,15 +17,32 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: Erik2202*
       POSTGRES_DB: enem
-    ports:
-      - "5432:5432"
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
+  enem_web:
+    build: ../web
+    container_name: enem_web
+    restart: always
+    depends_on:
+      - enem_server
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.enem.rule=Host(`enem.erikna.com`)"
+      - "traefik.http.routers.enem.entrypoints=web, websecure"
+      - "traefik.http.routers.enem.tls=true"
+      - "traefik.http.routers.enem.tls.certresolver=production"
+    networks:
+      - web
   enem_server:
     build: .
     container_name: enem_server
-    ports:
-      - "8050:8050"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nest.rule=Host(`enemapi.erikna.com`)
+      - traefik.http.routers.nest.entrypoints=web, websecure
+      - traefik.http.routers.nest.tls=true
+      - traefik.http.services.nest.loadbalancer.server.port=8050
+      - traefik.http.routers.nest.tls.certresolver=production
     depends_on:
       - enem_db
     networks:

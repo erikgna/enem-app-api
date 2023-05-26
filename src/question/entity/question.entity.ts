@@ -1,26 +1,25 @@
-import { IAnswers } from "src/interfaces/Answers";
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Question {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 255, nullable: true, default: "" })
   url: string;
 
-  @Column()
+  @Column({ type: "varchar", length: 255 })
   name: string;
 
-  @Column("longtext")
+  @Column({ type: "jsonb" })
+  answers: any;
+
+  @Column({ type: "varchar", length: 255, nullable: true, default: "" })
+  rightAnswer: string;
+
+  @Column({ type: "text" })
   description: string;
 
-  @Column("longtext")
+  @Column({ type: "text" })
   ask: string;
-
-  @Column({ type: "json" })
-  answers: IAnswers;
-
-  @Column()
-  rightAnswer: string;
 }

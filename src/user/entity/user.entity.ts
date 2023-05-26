@@ -1,23 +1,19 @@
-import { Length } from "class-validator";
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { UpdateUserDto } from "../dto/update-user.dto";
+import { Entity, Column, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Users {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryColumn("uuid")
   id: string;
 
-  @Column({ nullable: false })
-  @Length(3)
+  @Column({ type: "varchar", length: 255 })
   fullName: string;
 
-  @Column({ unique: true, nullable: false })
+  @Column({ type: "varchar", length: 255 })
   email: string;
 
-  @Column({ nullable: false })
-  @Length(6)
+  @Column({ type: "varchar", length: 255 })
   password: string;
 
-  @Column({ type: "json" })
-  questions: UpdateUserDto[];
+  @Column({ type: "jsonb" })
+  questions: any;
 }

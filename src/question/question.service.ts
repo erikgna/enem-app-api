@@ -38,7 +38,7 @@ export class QuestionsService {
         : filter.years[Math.floor(Math.random() * filter.years.length)];
 
     let question = await this.questionsRepository.query(
-      `SELECT * FROM question WHERE url LIKE '%${randomArea}%' AND name LIKE '%${randomYear}%' ORDER BY RAND() LIMIT 1`
+      `SELECT * FROM question WHERE url LIKE '%${randomArea}%' AND name LIKE '%${randomYear}%' ORDER BY random() LIMIT 1`
     );
 
     if (!id) {
