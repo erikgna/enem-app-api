@@ -16,7 +16,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: Erik2202*
-      POSTGRES_DB: enem
+      POSTGRES_DB: root
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
   enem_web:

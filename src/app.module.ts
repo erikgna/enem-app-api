@@ -20,7 +20,7 @@ import { join } from "path";
       port: 5432,
       username: "root",
       password: "Erik2202*",
-      database: "enem",
+      database: "root",
       entities: [__dirname + "/**/*.entity{.js,.ts}"],
       synchronize: true,
     }),
