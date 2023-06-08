@@ -1,6 +1,6 @@
 CREATE TABLE users (
   id UUID PRIMARY KEY,
-  fullName VARCHAR(255) NOT NULL,
+  fullname VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   questions JSONB NOT NULL
@@ -11,7 +11,7 @@ CREATE TABLE question (
   url VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   answers JSONB NOT NULL,
-  rightAnswer VARCHAR(255) NOT NULL,
+  rightanswer VARCHAR(255) NOT NULL,
   description TEXT NOT NULL,
   ask TEXT NOT NULL
 );

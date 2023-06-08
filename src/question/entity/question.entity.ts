@@ -14,8 +14,8 @@ export class Question {
   @Column({ type: "jsonb" })
   answers: any;
 
-  @Column({ type: "varchar", length: 255, nullable: true, default: "" })
-  rightAnswer: string;
+  @Column({ type: "varchar", length: 255, default: "" })
+  rightanswer: string;
 
   @Column({ type: "text" })
   description: string;

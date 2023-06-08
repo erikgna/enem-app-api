@@ -35,7 +35,7 @@ export class UserService {
         select: {
           name: true,
           url: true,
-          rightAnswer: true,
+          rightanswer: true,
         },
       });
 
@@ -60,7 +60,6 @@ export class UserService {
     if (existUser > 0) {
       return { message: "O email já está em uso.", status: 400 };
     }
-
     user.password = hashSync(user.password, 10);
     await this.userRepository.save(
       this.userRepository.create({ ...user, questions: [] })

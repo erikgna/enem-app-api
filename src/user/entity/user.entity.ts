@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn, BeforeInsert } from "typeorm";
+import { v4 as uuidv4 } from "uuid";
 
 @Entity()
 export class Users {
@@ -16,4 +17,9 @@ export class Users {
 
   @Column({ type: "jsonb" })
   questions: any;
+
+  @BeforeInsert()
+  generateId() {
+    this.id = uuidv4();
+  }
 }
